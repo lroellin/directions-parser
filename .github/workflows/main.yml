@@ -1,0 +1,13 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: build on netlify
+      uses: "netlify/actions/build@master"
+      secrets = ["GITHUB_TOKEN"]
