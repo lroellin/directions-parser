@@ -10,4 +10,4 @@ jobs:
     steps:
     - name: build on netlify
       uses: "netlify/actions/build@master"
-      secrets = ["GITHUB_TOKEN"]
+      secrets: ["GITHUB_TOKEN"]
