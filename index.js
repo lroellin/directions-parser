@@ -64,5 +64,5 @@ function checkForProblems(inputList) {
 
 function onExampleLinkClick(event) {
   event.preventDefault();
-  inputArea.value = `Niederurnen - Ziegelbrücke - Weesen - Mollis - Näfels - Filzbach - Obstalden - Mühlehorn - Murg - Unterterzen - Walenstadt - Flums - Mels - Sargans - Trübbach - Sevelen - Buchs - Grabs Garns - Wildhaus - Unterwasser - Alt St. Johann - Nesselau - Krummenau - Ebnat Kappe - Wattwil - Ricken - Uznach - Kaltbrunn - Benken - Schänis`;
+  inputArea.value = `St. Gallen - Zurich - Berne - Basel`;
 }
