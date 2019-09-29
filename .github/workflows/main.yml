@@ -1,14 +1,13 @@
-workflow "Publish on Netlify" {
-  on = "push"
-  resolves = ["Publish"]
-}
+name: CI
 
-action "Publish" {
-  uses = "netlify/actions/build@master"
-  secrets = ["GITHUB_TOKEN"]
-  env = {
-    NETLIFY_BASE = "site"
-    NETLIFY_CMD = "npm build"
-    NETLIFY_DIR = "site/_build"
-  }
-}
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: build on netlify
+      uses: "netlify/actions/build@master"
+      secrets = ["GITHUB_TOKEN"]
