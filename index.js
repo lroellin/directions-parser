@@ -5,8 +5,8 @@ let inputArea = null;
 const SPLITTER = " - ";
 
 // per google's doc: https://developers.google.com/maps/documentation/urls/guide#parameters_1
-const MAX_MOBILE_WAYPOINTS = 3;
-const MAX_ABSOLUTE_WAYPOINTS = 9;
+const MAX_MOBILE_WAYPOINTS = 3 - 2;
+const MAX_ABSOLUTE_WAYPOINTS = 9 - 2;
 
 window.onload = () => {
   form = document.getElementById("form");
@@ -44,19 +44,17 @@ function getGoogleMapsLink(inputList) {
 }
 
 function checkForProblems(inputList) {
-  const waypoints = inputList.slice(1, inputList.length - 1);
   let mobileWarning = "",
     absoluteWarning = "";
-  if (waypoints.length > MAX_MOBILE_WAYPOINTS)
-    mobileWarning =
-      "More than 3 middle waypoints are truncated on a mobile browser";
-  if (waypoints.length > MAX_ABSOLUTE_WAYPOINTS)
-    absoluteWarning = "More than 9 middle waypoints are always truncated";
+  if (inputList.length > MAX_MOBILE_WAYPOINTS)
+    mobileWarning = "More than 3 waypoints are truncated on a mobile browser";
+  if (inputList.length > MAX_ABSOLUTE_WAYPOINTS)
+    absoluteWarning = "More than 9 waypoints are always truncated";
   if (mobileWarning || absoluteWarning) {
     return window.confirm(
       `Warning: ${
-        waypoints.length
-      } waypoints.\n\n${mobileWarning}\n${absoluteWarning}\n\nDo you still want to continue?`
+        inputList.length
+      } waypoints.\n\nGoogle Maps API Limitation:\n${mobileWarning}\n${absoluteWarning}\n\nDo you still want to continue?`
     );
   }
   return true;
