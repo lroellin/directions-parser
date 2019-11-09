@@ -2,11 +2,13 @@ let form = null;
 let exampleLink = null;
 let inputArea = null;
 
+// Constants/magic numbers
+
 const SPLITTER = " - ";
 
 // per google's doc: https://developers.google.com/maps/documentation/urls/guide#parameters_1
-const MAX_MOBILE_WAYPOINTS = 3 - 2;
-const MAX_ABSOLUTE_WAYPOINTS = 9 - 2;
+const MAX_MOBILE_WAYPOINTS = 3;
+const MAX_ABSOLUTE_WAYPOINTS = 9;
 
 window.onload = () => {
   form = document.getElementById("form");
@@ -20,8 +22,9 @@ window.onload = () => {
 function onSubmit(event) {
   event.preventDefault();
 
-  const inputText = inputArea.value.replace(new RegExp("\n", "g"), "");
-  const inputList = inputText.split(SPLITTER);
+  const inputList = inputArea.value
+    .replace(new RegExp("\n", "g"), "")
+    .split(SPLITTER);
 
   if (!checkForProblems(inputList)) return; // abort
 
@@ -31,33 +34,31 @@ function onSubmit(event) {
 }
 
 function getGoogleMapsLink(inputList) {
-  const baseLink = "https://www.google.com/maps/dir/?api=1";
-  const origin = inputList[0];
-  const destination = inputList[inputList.length - 1];
-  const waypoints = inputList.slice(1, inputList.length - 1).join("|");
+    const baseLink = "https://www.google.com/maps/dir/?api=1";
   return [
     baseLink,
-    `origin=${encodeURIComponent(origin)}`,
-    `destination=${encodeURIComponent(destination)}`,
-    `waypoints=${encodeURIComponent(waypoints)}`
+    `origin=${encodeURIComponent(inputList[0])}`,
+    `waypoints=${encodeURIComponent(inputList.slice(1).join("|"))}`
   ].join("&");
 }
 
 function checkForProblems(inputList) {
-  let mobileWarning = "",
-    absoluteWarning = "";
-  if (inputList.length > MAX_MOBILE_WAYPOINTS)
-    mobileWarning = "More than 3 waypoints are truncated on a mobile browser";
-  if (inputList.length > MAX_ABSOLUTE_WAYPOINTS)
-    absoluteWarning = "More than 9 waypoints are always truncated";
-  if (mobileWarning || absoluteWarning) {
-    return window.confirm(
-      `Warning: ${
-        inputList.length
-      } waypoints.\n\nGoogle Maps API Limitation:\n${mobileWarning}\n${absoluteWarning}\n\nDo you still want to continue?`
-    );
-  }
-  return true;
+  const getText = (length, warningTexts) =>
+    `Warning: ${length} waypoints.\n\nGoogle Maps API Limitation:\n${warningTexts}\n\nDo you still want to continue?`;
+
+  const warningTexts = [
+    inputList.length > MAX_MOBILE_WAYPOINTS
+      ? "More than 3 waypoints are truncated on a mobile browser"
+      : null,
+    inputList.length > MAX_ABSOLUTE_WAYPOINTS
+      ? "More than 9 waypoints are always truncated"
+      : null
+  ]
+    .filter(v => v != null)
+    .join("\n");
+  return warningTexts.length > 0
+    ? window.confirm(getText(inputList.length, warningTexts))
+    : true;
 }
 
 function onExampleLinkClick(event) {
